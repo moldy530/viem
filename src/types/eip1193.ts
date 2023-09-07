@@ -3,12 +3,16 @@ import type { Address } from 'abitype'
 import type { BlockTag } from './block.js'
 import type { Hash, Hex, LogTopic } from './misc.js'
 import type {
-  Quantity,
   RpcBlock as Block,
   RpcBlockIdentifier as BlockIdentifier,
   RpcBlockNumber as BlockNumber,
   RpcFeeHistory as FeeHistory,
   RpcLog as Log,
+  Quantity,
+  RpcUserOperation,
+  RpcUserOperationGasEstimate,
+  RpcUserOperationReceipt,
+  RpcUserOperationRequest,
   RpcTransaction as Transaction,
   RpcTransactionReceipt as TransactionReceipt,
   RpcTransactionRequest as TransactionRequest,
@@ -661,6 +665,56 @@ export type PublicRpcSchema = [
     Method: 'eth_uninstallFilter'
     Parameters: [filterId: Quantity]
     ReturnType: boolean
+  },
+  /**
+   * @description Sends a signed user operation to the network the specified entrypoint address
+   * @link https://eips.ethereum.org/EIPS/eip-4337
+   * @example provider.request({ method: 'eth_sendUserOperation', params: [{ ... }, '0x...'] })
+   */
+  {
+    Method: "eth_sendUserOperation";
+    Parameters: [RpcUserOperationRequest, Address];
+    ReturnType: Hash;
+  },
+  /**
+   * @description Returns a gas estimate for a user operation against a specific entrypoint address
+   * @link https://eips.ethereum.org/EIPS/eip-4337
+   * @example provider.request({ method: 'eth_estimateUserOperationGas', params: [{ ... }, '0x...'] })
+   */
+  {
+    Method: "eth_estimateUserOperationGas";
+    Parameters: [RpcUserOperationRequest, Address];
+    ReturnType: RpcUserOperationGasEstimate;
+  },
+  /**
+   * @description Query for a user operation receipt for a given user operation hash
+   * @link https://eips.ethereum.org/EIPS/eip-4337
+   * @example provider.request({ method: 'eth_getUserOperationReceipt', params: ['0x...'] })
+   */
+  {
+    Method: "eth_getUserOperationReceipt";
+    Parameters: [Hash];
+    ReturnType: RpcUserOperationReceipt | null;
+  },
+  /**
+   * @description Returns the user operation for a given user operation hash
+   * @link https://eips.ethereum.org/EIPS/eip-4337
+   * @example provider.request({ method: 'eth_getUserOperationByHash', params: ['0x...'] })
+   */
+  {
+    Method: "eth_getUserOperationByHash";
+    Parameters: [Hash];
+    ReturnType: RpcUserOperation | null;
+  },
+  /**
+   * @description Returns the entrypoints the current node supports
+   * @link https://eips.ethereum.org/EIPS/eip-4337
+   * @example provider.request({ method: 'eth_supportedEntryPoints' })
+   */
+  {
+    Method: "eth_supportedEntryPoints";
+    Parameters?: undefined;
+    ReturnType: Address[];
   },
 ]
 

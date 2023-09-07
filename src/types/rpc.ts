@@ -16,6 +16,7 @@ import type {
   TransactionRequestEIP2930,
   TransactionRequestLegacy,
 } from './transaction.js'
+import type { EstimateUserOperationGasResponse, UserOperationReceipt, UserOperationRequest, UserOperationResponse } from './userOperation.js'
 import type { UnionOmit } from './utils.js'
 
 export type Index = `0x${string}`
@@ -50,3 +51,8 @@ export type RpcTransaction<TPending extends boolean = boolean> = UnionOmit<
   | TransactionEIP1559<Quantity, Index, TPending, '0x2'>,
   'typeHex'
 >
+
+export type RpcUserOperationRequest = UserOperationRequest;
+export type RpcUserOperation = UserOperationResponse;
+export type RpcUserOperationReceipt = UserOperationReceipt;
+export type RpcUserOperationGasEstimate = EstimateUserOperationGasResponse;
